@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 12px arial,sans-serif;
+}
+
+path {
+	stroke: steelblue;
+	stroke-width: 2;
+	fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+//variable are set outside the scope of the data call
+
+var margin = {top: 30, right: 20, bottom:30, left: 50};
+var width = 600 - margin.left - margin.right;
+var height = 270 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y%m%d").parse//tells d3 that date format coming in is YYYYMMDD
+//there are different formatters to pass to .format as well as string literals like "-"
+//https://github.com/mbostock/d3/wiki/Time-Formatting
+
+//tell d3 how much space it has to SCALE the DATA RANGE to
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+var xAxis = d3.svg.axis().scale(x)
+  .orient("bottom").ticks(5);
+var yAxis = d3.svg.axis().scale(y)
+  .orient("left").ticks(5);
+
+//valueline will be called in below function and it can then find the appropriate data
+var valueline = d3.svg.line()
+  .x(function(d) { return x(d.date); })
+  .y(function(d) {return y(d.squat); });
+
+//manually add the svg element to the body of the doc
+var svg = d3.select("body")
+  .append("svg") //svg element
+    .attr("width", width + margin.left + margin.right) //set the elements attributes to above variables
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g") //g will be the graph grouping of the svg. this sets the starting point inside the margins.
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("squat-tracking.csv", function(error, data){
+
+  data.forEach(function(d) { //d represents each row of data
+		d.date = parseDate(d.date); // HOW to parse the date is defined above
+    d.squat = +d.squat; //"+" forces data into numerical value (best practice)
+	});
+
+  //everything you do with this data goes below!
+  x.domain(d3.extent(data, function(d) { return d.date; })); //.extent looks at d.date and finds lowest and highest. These values are set to the x axis domain range.
+  y.domain([0, d3.max(data, function(d) {return d.squat; })]); //set domain range to 0 - max value of d.squat
+
+  svg.append("path")//add a new path element to the svg
+    .attr("d", valueline(data));
+
+  svg.append("g")//add the x axis
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+  svg.append("g")//add the y axis
+    .attr("class", "y axis")
+    .call(yAxis);
+
+});
+
+
+
+
+</script>
+</body>

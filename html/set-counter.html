@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/main.css">
+    </head>
+<body>
+
+
+<div id="exercise">
+  <h2>Squat 3x5 [work sets]</h2> <!--pull values from js -->
+  <hr>
+  <p>Weight: 220 lbs / Plates on Each Side: 45, 25, 10, 5, 2.5</p> <!--pull values from js -->
+  <div id="setTracker">
+    <h3>Sets</h3>
+    <div id="setCount" class="countTracker">3</div> <!--pull values from js -->
+    <!-- when set count is decreased, reset reps counter. when set count is 0, submit exercise. can always go back before submitting workout! -->
+    <button>-</button>
+  </div>
+  <div id="repTracker">
+  <h3>Reps</h3>
+    <button id="plusOne" class="incrementer">+</button>
+    <div id="repCount" class="countTracker"></div>
+    <button id="minusOne" class="incrementer">-</button>
+  </div>
+  <hr>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

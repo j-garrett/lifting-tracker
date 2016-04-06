@@ -1,0 +1,8 @@
+#repTracker button,
+#repTracker div,
+#setTracker button,
+#setTracker div{
+  display: inline-block;
+  font-size: 3em;
+  padding: 5%;
+}
